@@ -1,47 +1,40 @@
 import java.util.List;
+import java.util.Objects;
 
 public record Day01(int part1, int part2) {
 
-    public Day01(List<String> input) {
-        this(solvePart1(input), solvePart2(input));
-    }
+    private static final int RING_SIZE = 100;
+    private static final int START_POSITION = 50;
 
-    private static int solvePart1(List<String> input) {
-        int current = 50;
-        int zeroStop = 0;
-        for (String line : input) {
-            int diff = Integer.valueOf(line.substring(1, line.length()));
-            current = switch (line.charAt(0)) {
-                case 'L' -> current >= diff ? current - diff : (1000 + current - diff) % 100;
-                case 'R' -> (current + diff) % 100;
-                default -> 100;
-            };
-            if (current == 0) {
-                zeroStop++;
-            }
-        }
-        return zeroStop;
-    }
+    public static Day01 fromInput(List<String> input) {
+        Objects.requireNonNull(input, "input must not be null");
 
-    private static int solvePart2(List<String> input) {
-        int current = 50;
-        int zeroPass = 0;
+        var current = START_POSITION;
+        var zeroStops  = 0;
+        var zeroPasses = 0;
+
         for (String line : input) {
-            int diff = Integer.valueOf(line.substring(1, line.length()));
-            current = switch (line.charAt(0)) {
+            var direction = line.charAt(0);
+            var diff = Integer.parseInt(line, 1, line.length(), 10);
+
+            current = switch (direction) {
                 case 'L' -> {
-                    zeroPass += (((100 - current) % 100) + diff) / 100;
-                    yield current >= diff ? current - diff : (1000 + current - diff) % 100;
+                    zeroPasses += ((RING_SIZE - current) % RING_SIZE + diff) / RING_SIZE;
+                    yield Math.floorMod(current - diff, RING_SIZE);
                 }
                 case 'R' -> {
-                    zeroPass += (current + diff) / 100;
-                    yield (current + diff) % 100;
+                    zeroPasses += (current + diff) / RING_SIZE;
+                    yield (current + diff) % RING_SIZE;
                 }
-                default -> 100;
+                default -> throw new IllegalArgumentException("Unknown direction: '" + direction + '\'');
             };
-            //System.out.println(line + ", current: " + current + ", zeroPass: " + zeroPass);
-        }
-        return zeroPass;
-    }
 
+            if (current == 0) {
+                zeroStops++;
+            }
+        }
+
+        return new Day01(zeroStops, zeroPasses);
+    }
 }
+
