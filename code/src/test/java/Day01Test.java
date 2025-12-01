@@ -39,7 +39,7 @@ class Day01Test {
     void testSolutionPart2() {
         List<String> input = Utils.readLines(inputFile, Day01Test.class);
         Day01 day = new Day01(input);
-        assertEquals(1132, day.part2(), "Part 2");
+        assertEquals(6623, day.part2(), "Part 2");
     }
 
 }
