@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public final class Utils {
 
-    private static final Pattern TAB   = Pattern.compile("\\t");
+    private static final Pattern TAB = Pattern.compile("\\t");
     private static final Pattern COMMA = Pattern.compile(",");
 
     private Utils() {
@@ -21,11 +21,18 @@ public final class Utils {
         Objects.requireNonNull(fileName, "fileName must not be null");
         Objects.requireNonNull(context, "context class must not be null");
 
-        try (InputStream inputStream = Objects.requireNonNull(
-                     context.getResourceAsStream(fileName),
-                     () -> "Resource not found: " + fileName + " (relative to " + context.getName() + ')');
-             BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        try (InputStream inputStream =
+                        Objects.requireNonNull(
+                                context.getResourceAsStream(fileName),
+                                () ->
+                                        "Resource not found: "
+                                                + fileName
+                                                + " (relative to "
+                                                + context.getName()
+                                                + ')');
+                BufferedReader reader =
+                        new BufferedReader(
+                                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
             return reader.lines().toList();
         } catch (IOException e) {
@@ -38,8 +45,10 @@ public final class Utils {
 
         if (lines.size() != 1) {
             throw new IllegalStateException(
-                    "Expected exactly one line in file: " + fileName + ", but found " + lines.size()
-            );
+                    "Expected exactly one line in file: "
+                            + fileName
+                            + ", but found "
+                            + lines.size());
         }
 
         return lines.getFirst();
@@ -68,16 +77,11 @@ public final class Utils {
 
     public static List<String> readLineAsStringList(String fileName, Class<?> context) {
         String line = readLine(fileName, context);
-        return COMMA.splitAsStream(line)
-                .map(String::trim)
-                .filter(s -> !s.isBlank())
-                .toList();
+        return COMMA.splitAsStream(line).map(String::trim).filter(s -> !s.isBlank()).toList();
     }
 
     public static String read(String fileName, Class<?> context) {
         List<String> lines = readLines(fileName, context);
         return String.join("\n", lines);
     }
-
 }
-

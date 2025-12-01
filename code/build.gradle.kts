@@ -8,6 +8,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 plugins {
     application
     jacoco
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 repositories {
@@ -65,3 +66,32 @@ tasks.jacocoTestReport {
     }
 }
 
+spotless {
+    java {
+        target("src/**/*.java")
+
+        googleJavaFormat("1.32.0")
+            .reflowLongStrings()
+            .groupArtifact("com.google.googlejavaformat:google-java-format")
+            .aosp()
+
+        removeUnusedImports()
+        importOrder("java", "javax", "org", "com", "")
+
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    kotlin {
+        target("src/**/*.kt")
+        ktlint("1.3.1")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    format("misc") {
+        target("*.md", ".gitignore", ".editorconfig")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
