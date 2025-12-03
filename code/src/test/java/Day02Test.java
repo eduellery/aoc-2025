@@ -1,6 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.function.ToLongFunction;
+import java.util.function.LongSupplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -15,40 +15,25 @@ class Day02Test {
     private static final String EXAMPLE_FILE = "day02.example";
     private static final String INPUT_FILE = "day02.in";
 
-    private record Case(
-            String fileName,
-            long expected,
-            ToLongFunction<Day02> partFunction,
-            String displayName) {}
+    private static final Day02 EXAMPLE_DAY02 =
+            new Day02(Utils.readLineAsStringList(EXAMPLE_FILE, Day02Test.class));
+    private static final Day02 INPUT_DAY02 =
+            new Day02(Utils.readLineAsStringList(INPUT_FILE, Day02Test.class));
+
+    private record Case(long expected, LongSupplier partSupplier, String displayName) {}
 
     private static Stream<Arguments> allCases() {
         return Stream.of(
-                        new Case(
-                                EXAMPLE_FILE,
-                                1227775554L,
-                                Day02::part1,
-                                "Day 02 - Example – Part 1"),
-                        new Case(
-                                EXAMPLE_FILE,
-                                4174379265L,
-                                Day02::part2,
-                                "Day 02 - Example – Part 2"),
-                        new Case(INPUT_FILE, 22062284697L, Day02::part1, "Day 02 - Input – Part 1"),
-                        new Case(INPUT_FILE, 46666175279L, Day02::part2, "Day 02 - Input – Part 2"))
-                .map(c -> Arguments.of(c.fileName, c.expected, c.partFunction, c.displayName));
+                        new Case(1227775554L, EXAMPLE_DAY02::part1, "Day 02 - Example – Part 1"),
+                        new Case(4174379265L, EXAMPLE_DAY02::part2, "Day 02 - Example – Part 2"),
+                        new Case(22062284697L, INPUT_DAY02::part1, "Day 02 - Input – Part 1"),
+                        new Case(46666175279L, INPUT_DAY02::part2, "Day 02 - Input – Part 2"))
+                .map(c -> Arguments.of(c.expected, c.partSupplier, c.displayName));
     }
 
-    @ParameterizedTest(name = "{3}")
+    @ParameterizedTest(name = "{2}")
     @MethodSource("allCases")
-    void testDay02(
-            String fileName,
-            long expected,
-            ToLongFunction<Day02> partFunction,
-            String displayName) {
-
-        var input = Utils.readLineAsStringList(fileName, Day02Test.class);
-        var day = new Day02(input);
-
-        assertEquals(expected, partFunction.applyAsLong(day), displayName);
+    void testDay02(long expected, LongSupplier partSupplier, String displayName) {
+        assertEquals(expected, partSupplier.getAsLong(), displayName);
     }
 }
