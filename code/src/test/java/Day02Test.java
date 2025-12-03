@@ -28,9 +28,13 @@ class Day02Test {
                                 1227775554L,
                                 Day02::part1,
                                 "Day 02 - Example – Part 1"),
-                        new Case(EXAMPLE_FILE, 2L, Day02::part2, "Day 02 - Example – Part 2"),
+                        new Case(
+                                EXAMPLE_FILE,
+                                4174379265L,
+                                Day02::part2,
+                                "Day 02 - Example – Part 2"),
                         new Case(INPUT_FILE, 22062284697L, Day02::part1, "Day 02 - Input – Part 1"),
-                        new Case(INPUT_FILE, 2L, Day02::part2, "Day 02 - Input – Part 2"))
+                        new Case(INPUT_FILE, 46666175279L, Day02::part2, "Day 02 - Input – Part 2"))
                 .map(c -> Arguments.of(c.fileName, c.expected, c.partFunction, c.displayName));
     }
 
@@ -43,7 +47,7 @@ class Day02Test {
             String displayName) {
 
         var input = Utils.readLineAsStringList(fileName, Day02Test.class);
-        var day = Day02.fromInput(input);
+        var day = new Day02(input);
 
         assertEquals(expected, partFunction.applyAsLong(day), displayName);
     }
