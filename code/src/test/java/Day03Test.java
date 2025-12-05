@@ -15,10 +15,8 @@ class Day03Test {
     private static final String EXAMPLE_FILE = "day03.example";
     private static final String INPUT_FILE = "day03.in";
 
-    private static final Day03 EXAMPLE_DAY03 =
-            new Day03(Utils.readLines(EXAMPLE_FILE, Day03Test.class));
-    private static final Day03 INPUT_DAY03 =
-            new Day03(Utils.readLines(INPUT_FILE, Day03Test.class));
+    private static final Day03 EXAMPLE_DAY03 = new Day03(Utils.readLines(EXAMPLE_FILE));
+    private static final Day03 INPUT_DAY03 = new Day03(Utils.readLines(INPUT_FILE));
 
     private record Case(long expected, LongSupplier partSupplier, String displayName) {}
 

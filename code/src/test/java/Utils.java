@@ -17,18 +17,17 @@ public final class Utils {
         throw new AssertionError("Utility class should not be instantiated");
     }
 
-    public static List<String> readLines(String fileName, Class<?> context) {
+    public static List<String> readLines(String fileName) {
         Objects.requireNonNull(fileName, "fileName must not be null");
-        Objects.requireNonNull(context, "context class must not be null");
 
         try (InputStream inputStream =
                         Objects.requireNonNull(
-                                context.getResourceAsStream(fileName),
+                                Utils.class.getResourceAsStream(fileName),
                                 () ->
                                         "Resource not found: "
                                                 + fileName
                                                 + " (relative to "
-                                                + context.getName()
+                                                + Utils.class.getName()
                                                 + ')');
                 BufferedReader reader =
                         new BufferedReader(
@@ -40,8 +39,8 @@ public final class Utils {
         }
     }
 
-    public static String readLine(String fileName, Class<?> context) {
-        List<String> lines = readLines(fileName, context);
+    public static String readLine(String fileName) {
+        List<String> lines = readLines(fileName);
 
         if (lines.size() != 1) {
             throw new IllegalStateException(
@@ -54,20 +53,20 @@ public final class Utils {
         return lines.getFirst();
     }
 
-    public static List<Integer> readLinesAsInt(String fileName, Class<?> context) {
-        return readLines(fileName, context).stream()
+    public static List<Integer> readLinesAsInt(String fileName) {
+        return readLines(fileName).stream()
                 .map(String::trim)
                 .filter(s -> !s.isBlank())
                 .map(Integer::parseInt)
                 .toList();
     }
 
-    public static int readLineAsInt(String fileName, Class<?> context) {
-        return Integer.parseInt(readLine(fileName, context).trim());
+    public static int readLineAsInt(String fileName) {
+        return Integer.parseInt(readLine(fileName).trim());
     }
 
-    public static List<Integer> readLineAsIntList(String fileName, Class<?> context) {
-        String line = readLine(fileName, context);
+    public static List<Integer> readLineAsIntList(String fileName) {
+        String line = readLine(fileName);
         return TAB.splitAsStream(line)
                 .map(String::trim)
                 .filter(s -> !s.isBlank())
@@ -75,13 +74,13 @@ public final class Utils {
                 .toList();
     }
 
-    public static List<String> readLineAsStringList(String fileName, Class<?> context) {
-        String line = readLine(fileName, context);
+    public static List<String> readLineAsStringList(String fileName) {
+        String line = readLine(fileName);
         return COMMA.splitAsStream(line).map(String::trim).filter(s -> !s.isBlank()).toList();
     }
 
-    public static String read(String fileName, Class<?> context) {
-        List<String> lines = readLines(fileName, context);
+    public static String read(String fileName) {
+        List<String> lines = readLines(fileName);
         return String.join("\n", lines);
     }
 }
