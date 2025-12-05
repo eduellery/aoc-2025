@@ -24,10 +24,10 @@ class Day03Test {
 
     private static Stream<Arguments> allCases() {
         return Stream.of(
-                        new Case(357, EXAMPLE_DAY03::part1, "Day 03 - Example – Part 1"),
-                        new Case(0, EXAMPLE_DAY03::part2, "Day 03 - Example – Part 2"),
-                        new Case(17694, INPUT_DAY03::part1, "Day 03 - Input – Part 1"),
-                        new Case(0, INPUT_DAY03::part2, "Day 03 - Input – Part 2"))
+                        new Case(357L, EXAMPLE_DAY03::part1, "Day 03 - Example – Part 1"),
+                        new Case(3121910778619L, EXAMPLE_DAY03::part2, "Day 03 - Example – Part 2"),
+                        new Case(17694L, INPUT_DAY03::part1, "Day 03 - Input – Part 1"),
+                        new Case(175659236361660L, INPUT_DAY03::part2, "Day 03 - Input – Part 2"))
                 .map(c -> Arguments.of(c.expected, c.partSupplier, c.displayName));
     }
 

@@ -3,45 +3,51 @@ import java.util.Objects;
 
 public record Day03(long part1, long part2) {
 
+    private static final int PART1_DIGITS = 2;
+    private static final int PART2_DIGITS = 12;
+
     public Day03(List<String> input) {
-        this(solvePart1(Objects.requireNonNull(input)), solvePart2(input));
+        Objects.requireNonNull(input, "input must not be null");
+        this(calculateTotalJolts(input, PART1_DIGITS), calculateTotalJolts(input, PART2_DIGITS));
     }
 
-    private static long solvePart1(List<String> input) {
-        long total = 0L;
+    private static long calculateTotalJolts(List<String> input, int digitsToPick) {
+        return input.stream()
+                .map(String::strip)
+                .mapToLong(line -> joltsForLine(line, digitsToPick))
+                .sum();
+    }
 
-        for (var line : input) {
-            var digits = line.chars().map(ch -> ch - '0').toArray();
+    private static long joltsForLine(String line, int digitsToPick) {
+        var bank = line.chars().map(ch -> ch - '0').toArray();
+        var digits = new int[digitsToPick];
+        var last = -1;
 
-            var lastIndex = digits.length - 1;
-            var leftIndex = lastIndex - 1;
-            var rightIndex = lastIndex;
-            var high = digits[leftIndex];
-            var low = digits[rightIndex];
-
-            for (int i = leftIndex - 1; i >= 0; i--) {
-                var candidateHigh = digits[i];
-                if (candidateHigh >= high) {
-                    high = candidateHigh;
-                    for (int j = rightIndex - 1; j > i; j--) {
-                        var candidateLow = digits[j];
-                        if (candidateLow >= low) {
-                            low = candidateLow;
-                            rightIndex = j;
-                        }
-                    }
-                }
-            }
-
-            total += high * 10L + low;
+        for (int i = digitsToPick - 1; i >= 0; i--) {
+            last = findMaxIndex(bank, last + 1, bank.length - i);
+            digits[i] = bank[last];
         }
 
-        return total;
+        long jolts = 0;
+        for (int i = digits.length - 1; i >= 0; i--) {
+            jolts = jolts * 10 + digits[i];
+        }
+
+        return jolts;
     }
 
-    private static long solvePart2(List<String> input) {
-        long total = 0;
+    private static int findMaxIndex(int[] bank, int startInclusive, int endExclusive) {
+        var maxIndex = startInclusive;
+        var maxValue = bank[startInclusive];
 
-        return total;
+        for (int i = startInclusive + 1; i < endExclusive; i++) {
+            var candidate = bank[i];
+            if (candidate > maxValue) {
+                maxValue = candidate;
+                maxIndex = i;
+            }
+        }
+
+        return maxIndex;
     }
 }
