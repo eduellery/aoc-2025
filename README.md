@@ -39,6 +39,9 @@ This 2025 edition is a special, celebratory one: 10 years of AoC, 25 years since
 | :---: | :---: | :---: |
 | [Day 1](https://adventofcode.com/2025/day/1) | ⭐ | ⭐ |
 | [Day 2](https://adventofcode.com/2025/day/2) | ⭐ | ⭐ |
+| [Day 3](https://adventofcode.com/2025/day/3) | ⭐ | ⭐ |
+| [Day 4](https://adventofcode.com/2025/day/4) | ⭐ | ⭐ |
+| [Day 5](https://adventofcode.com/2025/day/5) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
 
 [^disclaimer]: **Disclaimer**: I do AoC for fun and to learn new languages and new tricks. Part of my learning process (also for fun, even if I
